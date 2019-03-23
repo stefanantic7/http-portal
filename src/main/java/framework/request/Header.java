@@ -1,6 +1,7 @@
 package framework.request;
 
 import java.util.HashMap;
+import java.util.Set;
 
 /**
  * Class represent one header element.
@@ -34,6 +35,15 @@ public class Header {
      */
     public String get(String name) {
         return this.headers.get(name);
+    }
+
+    /**
+     * Get all headers.
+     *
+     * @return Set of header's keys
+     */
+    public Set<String> getKeys() {
+        return this.headers.keySet();
     }
 
     @Override

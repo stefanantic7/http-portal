@@ -1,5 +1,7 @@
 package framework.response;
 
+import framework.request.Header;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.HashMap;
@@ -11,7 +13,6 @@ public class HtmlResponse extends Response {
     private static final String VIEWS_FOLDER = "src/main/java/app/views/";
     private File template;
     private HashMap<String, String> variables;
-    private HashMap<String, String> header;
 
     public HtmlResponse(String templateFile) {
         this(templateFile, new HashMap<String, String>());
@@ -20,8 +21,8 @@ public class HtmlResponse extends Response {
     public HtmlResponse(String templateFile, HashMap<String, String> variables) {
         this.template = new File(VIEWS_FOLDER+templateFile);
         this.variables = variables;
-        this.header = new HashMap<String, String>();
-        this.header.put("Content-Type", "");
+        this.header = new Header();
+        this.header.add("Content-Type", "");
     }
 
     private String replaceVariables(String rawHtml) {
@@ -47,7 +48,7 @@ public class HtmlResponse extends Response {
 
         responseContext.append("HTTP/1.1 200 OK\n");
         for (String key :
-                this.header.keySet()) {
+                this.header.getKeys()) {
             responseContext.append(key).append(":").append(this.header.get(key)).append("\n");
         }
         responseContext.append("\n");

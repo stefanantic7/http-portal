@@ -3,5 +3,10 @@
     "method": "GET",
     "location": "/",
     "action": "InspireController@load"
+  },
+  {
+    "method": "GET",
+    "location": "/quote",
+    "action": "InspireController@quote"
   }
 ]

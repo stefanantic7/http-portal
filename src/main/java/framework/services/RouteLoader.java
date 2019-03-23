@@ -47,7 +47,9 @@ public class RouteLoader {
         Route targetRoute = null;
         for (Route route :
                 this.routes) {
-            targetRoute = route;
+            if(route.getLocation().equals(location) && route.getMethod().equals(method)) {
+                targetRoute = route;
+            }
         }
 
         if(targetRoute == null) {
