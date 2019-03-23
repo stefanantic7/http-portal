@@ -8,5 +8,10 @@
     "method": "GET",
     "location": "/quote",
     "action": "InspireController@quote"
+  },
+  {
+    "method": "GET",
+    "location": "/random",
+    "action": "InspireController@random"
   }
 ]

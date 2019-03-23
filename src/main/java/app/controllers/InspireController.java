@@ -1,31 +1,57 @@
 package app.controllers;
 
+import app.models.Quote;
+import app.repositories.QuotesRepository;
 import clientportal.Client;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import framework.request.Request;
 import framework.response.HtmlResponse;
 import framework.response.RedirectResponse;
 import framework.response.Response;
 
 import java.util.HashMap;
+import java.util.Random;
 
 public class InspireController {
 
-    public Response load(Client client) {
-
-//        try {
-//            System.out.println(client.get("https://quotes.rest/qod"));
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-
+    public Response load() {
         return new RedirectResponse("/quote");
     }
 
     public Response quote() {
+
+        QuotesRepository quotesRepository = new QuotesRepository();
+        Quote quote = quotesRepository.getRandomQuote();
+
         HashMap<String, String> variables = new HashMap<String, String>();
-        variables.put("quote", "Uspeh je loš učitelj. Zavede pametne ljude da misle da ne mogu da izgube");
-        variables.put("author", "Bill Gates");
+        variables.put("quote", quote.getText());
+        variables.put("author", quote.getAuthor());
         return new HtmlResponse("quote.html", variables);
+    }
+
+    public Response random(Client client) {
+        Quote quote = null;
+        try {
+            JsonArray quotesArray = client.get("https://quotes.rest/qod")
+                    .getAsJsonObject("contents")
+                    .getAsJsonArray("quotes");
+            Random random = new Random();
+            JsonObject randomQuote = quotesArray.get(random.nextInt(quotesArray.size())).getAsJsonObject();
+            quote = new Quote(randomQuote.get("quote").getAsString(), randomQuote.get("author").getAsString());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        if(quote==null) {
+            quote = new QuotesRepository().getRandomQuote();
+        }
+
+        HashMap<String, String> variables = new HashMap<String, String>();
+        variables.put("quote", quote.getText());
+        variables.put("author", quote.getAuthor());
+        return new HtmlResponse("quote.html", variables);
+
     }
 
 }

@@ -42,7 +42,6 @@ public class ControllerDispatcher {
             throw new IllegalAccessException("Can not find the method: "+methodName);
         }
 
-        System.out.println("zovem: "+methodName);
         return (Response) method.invoke(o, getParamsInstances(params));
 
     }
