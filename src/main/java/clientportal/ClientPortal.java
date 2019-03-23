@@ -36,7 +36,6 @@ public class ClientPortal {
         }
 
         connection.setRequestMethod(method);
-        System.out.println(connection.getHeaderField("Content-Type"));
         BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
         StringBuilder response = new StringBuilder();
         while ((readLine = in .readLine()) != null) {

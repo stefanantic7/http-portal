@@ -2,6 +2,7 @@ package server;
 
 import clientportal.Client;
 import clientportal.ClientPortalAdapter;
+import framework.response.Response;
 import framework.route.Route;
 import framework.services.ControllerDispatcher;
 import framework.services.DependencyInjectionContainer;
@@ -52,8 +53,9 @@ public class ServerThread implements Runnable{
 
             Route route = RouteLoader.getInstance().getRoute(request.getMethod(), request.getLocation());
 
+            Response response = null;
             try {
-                new ControllerDispatcher(container).dispatch(route);
+                response = new ControllerDispatcher(container).dispatch(route);
             } catch (ClassNotFoundException e) {
                 System.err.println("Class "+route.getAction().split("@")[0]+" does not exist");
                 e.printStackTrace();
@@ -71,7 +73,9 @@ public class ServerThread implements Runnable{
                 e.printStackTrace();
             }
 
-//            out.println(response);
+            if(response != null) {
+                out.println(response.render());
+            }
 
             in.close();
             out.close();
@@ -120,19 +124,5 @@ public class ServerThread implements Runnable{
         Request request = new Request(method, route, header, parameters);
 
         return request;
-    }
-
-    private String napraviOdogovor(){
-        String retVal = "HTTP/1.1 200 OK\r\nContent-Type: text/html\r\n\r\n";
-//		String vrednost = komanda.substring(komanda.indexOf("poljeForme=")+11, komanda.indexOf("HTTP")-1);
-
-        retVal += "<html><head><title>Odgovor servera</title><script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js\"></script>\n</head>\n";
-        retVal += "<body><h1>Uneta vrednost: "+1+"</h1>\n";
-        retVal += "</body></html>";
-
-//        System.out.println("HTTP odgovor:");
-//        System.out.println(retVal);
-
-        return retVal;
     }
 }

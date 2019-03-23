@@ -7,7 +7,7 @@ public class Helper {
     public static HashMap<String, String> getParametersFromRoute(String route) {
         String[] splittedRoute = route.split("\\?");
 
-        if(splittedRoute.length == 0) {
+        if(splittedRoute.length == 1) {
             return new HashMap<String, String>();
         }
 
