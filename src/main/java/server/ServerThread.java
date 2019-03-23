@@ -1,5 +1,7 @@
 package server;
 
+import clientportal.Client;
+import clientportal.ClientPortalAdapter;
 import framework.route.Route;
 import framework.services.ControllerDispatcher;
 import framework.services.DependencyInjectionContainer;
@@ -43,8 +45,10 @@ public class ServerThread implements Runnable{
         try {
 
             Request request = this.generateRequest();
+            //TODO: Middleware here!
             DependencyInjectionContainer container = new DependencyInjectionContainer();
-            container.bind(Request.class, request);
+            container.singleton(Request.class, request);
+            container.bind(Client.class, ClientPortalAdapter.class);
 
             Route route = RouteLoader.getInstance().getRoute(request.getMethod(), request.getLocation());
 

@@ -1,8 +1,10 @@
 package server;
 
+import clientportal.Client;
+import clientportal.ClientPortal;
+import clientportal.ClientPortalAdapter;
 import framework.services.RouteLoader;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -11,7 +13,7 @@ public class Server {
 
     public static final int TCP_PORT = 8080;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         RouteLoader routeLoader = RouteLoader.getInstance();
 
         try {
