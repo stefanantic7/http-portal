@@ -1,13 +1,13 @@
-package server.request;
+package framework.request;
 
-import server.enums.Method;
+import framework.request.enums.Method;
 
 import java.util.HashMap;
 
 public class Request {
 
     private Method method;
-    private String route;
+    private String location;
     private Header header;
     private HashMap<String, String> parameters;
 
@@ -15,13 +15,13 @@ public class Request {
         this(Method.GET, "/");
     }
 
-    public Request(Method method, String route) {
-        this(method, route, new Header(), new HashMap<String, String>());
+    public Request(Method method, String location) {
+        this(method, location, new Header(), new HashMap<String, String>());
     }
 
-    public Request(Method method, String route, Header header, HashMap<String, String> parameters) {
+    public Request(Method method, String location, Header header, HashMap<String, String> parameters) {
         this.method = method;
-        this.route = route;
+        this.location = location;
         this.header = header;
         this.parameters = parameters;
     }
@@ -46,8 +46,8 @@ public class Request {
         return method;
     }
 
-    public String getRoute() {
-        return route;
+    public String getLocation() {
+        return location;
     }
 
     public Header getHeader() {

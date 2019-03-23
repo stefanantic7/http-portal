@@ -1,4 +1,4 @@
-package server.request;
+package framework.request;
 
 import java.util.HashMap;
 

@@ -1,12 +1,17 @@
 package server;
 
-import server.enums.Method;
-import server.request.Header;
-import server.request.Helper;
-import server.request.Request;
-import server.request.exceptions.RequestNotValidException;
+import framework.route.Route;
+import framework.services.ControllerDispatcher;
+import framework.services.DependencyInjectionContainer;
+import framework.services.RouteLoader;
+import framework.request.enums.Method;
+import framework.request.Header;
+import framework.request.Helper;
+import framework.request.Request;
+import framework.request.exceptions.RequestNotValidException;
 
 import java.io.*;
+import java.lang.reflect.InvocationTargetException;
 import java.net.Socket;
 import java.util.HashMap;
 
@@ -38,11 +43,29 @@ public class ServerThread implements Runnable{
         try {
 
             Request request = this.generateRequest();
+            DependencyInjectionContainer container = new DependencyInjectionContainer();
+            container.bind(Request.class, request);
 
-            System.out.println(request.getMethod());
-            System.out.println(request.getRoute());
-            System.out.println(request.getHeader());
-            System.out.println(request.getParameters());
+            Route route = RouteLoader.getInstance().getRoute(request.getMethod(), request.getLocation());
+
+            try {
+                new ControllerDispatcher(container).dispatch(route);
+            } catch (ClassNotFoundException e) {
+                System.err.println("Class "+route.getAction().split("@")[0]+" does not exist");
+                e.printStackTrace();
+            } catch (NoSuchMethodException e) {
+                System.err.println("Method "+route.getAction().split("@")[1]+" does not exist");
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                System.err.println("Illegal access to "+route.getAction());
+                e.printStackTrace();
+            } catch (InstantiationException e) {
+                System.err.println("Can not instantiate "+route.getAction().split("@")[0]);
+                e.printStackTrace();
+            } catch (InvocationTargetException e) {
+                System.err.println("Illegal access to "+route.getAction());
+                e.printStackTrace();
+            }
 
 //            out.println(response);
 

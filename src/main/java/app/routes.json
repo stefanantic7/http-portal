@@ -1,0 +1,7 @@
+[
+  {
+    "method": "GET",
+    "location": "/",
+    "action": "InspireControllerr@load"
+  }
+]
