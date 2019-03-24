@@ -15,6 +15,8 @@ public class QuotesRepository {
                     "Nikola Tesla"),
             new Quote("We were all born to die once, honor and shame will live forever!",
                     "Petar Petrović Njegoš"),
+            new Quote("Do not waste your time on preparing your bed, the bed won't run away, your time will.",
+                    "Stefan Antić")
 
     };
 
