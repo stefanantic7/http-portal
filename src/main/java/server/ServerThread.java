@@ -46,6 +46,13 @@ public class ServerThread implements Runnable{
         try {
 
             Request request = this.generateRequest();
+            if(request == null) {
+                in.close();
+                out.close();
+                socket.close();
+                return;
+            }
+
             //TODO: Middleware here!
             DependencyInjectionContainer container = new DependencyInjectionContainer();
             container.singleton(Request.class, request);
@@ -77,6 +84,7 @@ public class ServerThread implements Runnable{
                 out.println(response.render());
             }
 
+
             in.close();
             out.close();
             socket.close();
@@ -91,7 +99,7 @@ public class ServerThread implements Runnable{
     private Request generateRequest() throws IOException, RequestNotValidException {
         String command = in.readLine();
         if(command == null) {
-            throw new RequestNotValidException(command);
+            return null;
         }
 
         String[] actionRow = command.split(" ");

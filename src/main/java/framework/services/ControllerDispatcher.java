@@ -47,6 +47,7 @@ public class ControllerDispatcher {
     }
 
     private Object[] getParamsInstances(Class<?>[] params) {
+        //TODO: Throw exception if param Class is not instantiable
         ArrayList<Object> paramsInstances = new ArrayList<Object>();
 
         for (Class<?> parameter: params) {

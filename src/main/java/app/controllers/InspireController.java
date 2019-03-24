@@ -24,10 +24,7 @@ public class InspireController {
         QuotesRepository quotesRepository = new QuotesRepository();
         Quote quote = quotesRepository.getRandomQuote();
 
-        HashMap<String, String> variables = new HashMap<String, String>();
-        variables.put("quote", quote.getText());
-        variables.put("author", quote.getAuthor());
-        return new HtmlResponse("quote.html", variables);
+        return getResponse(quote);
     }
 
     public Response random(Client client) {
@@ -47,11 +44,14 @@ public class InspireController {
             quote = new QuotesRepository().getRandomQuote();
         }
 
+        return getResponse(quote);
+
+    }
+
+    private Response getResponse(Quote quote) {
         HashMap<String, String> variables = new HashMap<String, String>();
         variables.put("quote", quote.getText());
         variables.put("author", quote.getAuthor());
         return new HtmlResponse("quote.html", variables);
-
     }
-
 }
