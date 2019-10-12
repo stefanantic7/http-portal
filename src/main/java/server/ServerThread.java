@@ -2,10 +2,11 @@ package server;
 
 import clientportal.Client;
 import clientportal.ClientPortalAdapter;
+import framework.inject.DependencyInjectionEngine;
 import framework.response.Response;
 import framework.route.Route;
 import framework.services.ControllerDispatcher;
-import framework.services.DependencyInjectionContainer;
+import framework.inject.DependencyInjectionContainer;
 import framework.services.RouteLoader;
 import framework.request.enums.Method;
 import framework.request.Header;
@@ -24,7 +25,9 @@ public class ServerThread implements Runnable{
     private BufferedReader in;
     private PrintWriter out;
 
-    public ServerThread(Socket socket){
+    private DependencyInjectionEngine dependencyInjectionEngine;
+
+    public ServerThread(Socket socket, DependencyInjectionEngine dependencyInjectionEngine){
         this.socket = socket;
 
         try {
@@ -40,6 +43,7 @@ public class ServerThread implements Runnable{
             e.printStackTrace();
         }
 
+        this.dependencyInjectionEngine = dependencyInjectionEngine;
     }
 
     public void run(){
@@ -54,15 +58,15 @@ public class ServerThread implements Runnable{
             }
 
             //TODO: Middleware here!
-            DependencyInjectionContainer container = new DependencyInjectionContainer();
-            container.singleton(Request.class, request);
-            container.bind(Client.class, ClientPortalAdapter.class);
+
+//            DependencyInjectionContainer container = new DependencyInjectionContainer();
+//            container.singleton(Request.class, request);
 
             Route route = RouteLoader.getInstance().getRoute(request.getMethod(), request.getLocation());
 
             Response response = null;
             try {
-                response = new ControllerDispatcher(container).dispatch(route);
+                response = new ControllerDispatcher(this.dependencyInjectionEngine).dispatch(route);
             } catch (ClassNotFoundException e) {
                 System.err.println("Class "+route.getAction().split("@")[0]+" does not exist");
                 e.printStackTrace();
@@ -109,7 +113,7 @@ public class ServerThread implements Runnable{
         HashMap<String, String> parameters = Helper.getParametersFromRoute(route);
 
         do {
-            System.out.println(command);
+//            System.out.println(command);
             command = in.readLine();
             String[] headerRow = command.split(": ");
             if(headerRow.length == 2) {

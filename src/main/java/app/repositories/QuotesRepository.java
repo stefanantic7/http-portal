@@ -4,7 +4,7 @@ import app.models.Quote;
 
 import java.util.Random;
 
-public class QuotesRepository {
+public class QuotesRepository implements QuotesRepositoryInterface {
 
     private static Quote[] quotes = {
             new Quote("If today were the last of your life, would you do what you were going to do today?",

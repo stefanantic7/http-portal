@@ -6,12 +6,12 @@
   },
   {
     "method": "GET",
-    "location": "/quote",
-    "action": "InspireController@quote"
+    "location": "/quotes/random",
+    "action": "InspireController@random"
   },
   {
     "method": "GET",
-    "location": "/random",
-    "action": "InspireController@random"
+    "location": "/quotes/qod",
+    "action": "InspireController@qod"
   }
 ]

@@ -53,7 +53,7 @@ public class RouteLoader {
         }
 
         if(targetRoute == null) {
-            //TODO: throw exception
+            //TODO: throw 404 exception
         }
 
         return targetRoute;
