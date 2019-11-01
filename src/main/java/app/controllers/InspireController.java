@@ -16,15 +16,15 @@ public class InspireController {
     private QuotesService quotesService;
 
     public Response load() {
-        return new RedirectResponse("/quote");
+        return new RedirectResponse("/quotes/random");
     }
 
-    public Response random(Client client) {
+    public Response random() {
         Quote quote = this.quotesService.getRandomQuote();
         return getResponse(quote);
     }
 
-    public Response qod() {
+    public Response qod(Client client) {
         Quote quote = this.quotesService.getQuoteOfDay();
         return getResponse(quote);
     }

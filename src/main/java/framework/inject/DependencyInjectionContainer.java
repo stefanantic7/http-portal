@@ -28,7 +28,7 @@ public class DependencyInjectionContainer {
     }
 
     public void bind(Class<?> abstraction, Class<?> concrete) {
-            this.container.put(abstraction, concrete);
+        this.container.put(abstraction, concrete);
     }
 
     private Object getSingletonInstance(Class clazz) {
